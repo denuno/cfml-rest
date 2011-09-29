@@ -43,25 +43,25 @@ The flow here is, you check out, say the FW/1 sources, commit them to your proje
 Obviously this is all about making our lives as coders living with living code a bit easier. CLWLC FTW! 
 </pre>
 
-So, to continue, we're going to pull in the fw1 stuff and see if we can get our fw1.cfoanz host rolling.  We begin by typing &quot;cfdistro src.import&quot; in our project root.  Then we go get some coffee, because there's a bunch of freaking source we're downloading (fw/1, coldbox, machii, cfwheels, taffy).
+So, to continue, we're going to pull in the fw1 stuff and see if we can get our fw1.cfoanz host rolling.  We begin by typing "cfdistro src.import" in our project root.  Then we go get some coffee, because there's a bunch of freaking source we're downloading (fw/1, coldbox, machii, cfwheels, taffy).
  
 Once it's all downloaded,
  
 == let's set our base mapping.xml ==
 
-file by running &quot;cfdistro src.to.mappings.xml&quot;.  This will create a mappings.xml file set up to use the folders in our src directory for mappings.  
+file by running "cfdistro src.to.mappings.xml".  This will create a mappings.xml file set up to use the folders in our src directory for mappings.  
  
 Then we'll try to
  
 == run a build: ==
 
- &quot;cfdistro build&quot;
+ "cfdistro build"
  
 Next, we'll
  
 == start the build ==
 
-in jetty server in the foreground &quot;cfdistro runwar.start.fg&quot; (you can run it in the background with &quot;runwar.start&quot;, but lets verify it'll start first!).  If all goes well, we'll now be able to open a browser to 127.0.0.1:8087 (the port is set in build/build.properties).
+in jetty server in the foreground "cfdistro runwar.start.fg" (you can run it in the background with "runwar.start", but lets verify it'll start first!).  If all goes well, we'll now be able to open a browser to 127.0.0.1:8087 (the port is set in build/build.properties).
  
 Next, let's test our fw1 app by going to 127.0.0.1:8087/fw1app 
  
