@@ -34,13 +34,19 @@ Then we'll try to
 Next, we'll
 == start the build ==
 in jetty server in the foreground "cfdistro runwar.start.fg" (you can run it in the background with "runwar.start", but lets verify it'll start first!).  If all goes well, we'll now be able to open a browser to 127.0.0.1:8087 (the port is set in build/build.properties).
+
 Next, let's test our fw1 app by going to 127.0.0.1:8087/fw1app 
+
 We should get the fw/1 welcome screen, albiet without the CSS and whatnot (we'll address this in a bit).
+
 Maybe we should try the mach-ii app next?  We'll need to change the CHANGEME to /MachIIapp in the file !MachIIapp/config/mach-ii.xml, then hit up:
+
 127.0.0.1:8087/MachIIapp 
+
 Next we'll test out !CFWheels by going to:
 http://localhost:8087/cfwheels/
+
 And then coldbox via:
 http://localhost:8087/coldbox/samples/ 
-We should see nice welcoming screens for all the above. 
- 
+
+We should see nice welcoming screens for all the above.  
