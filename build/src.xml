@@ -65,6 +65,13 @@
 		uri="http://svn.mach-ii.com/machii/skeleton/1-8-0/trunk/" 
 		user="" password="" />
 		
+<!--	Taffy REST framework
+ -->
+		<src dest="@src.dir@/taffy" type="git" 
+		uri="https://github.com/atuttle/Taffy.git" 
+		user="" password="" branch="Railo" />
+		
+		
 <!--	ColdSpring 1.2
 		<src dest="./" type="cvs" 
 		uri=":pserver:anoncvs@cvs.coldspringframework.org:/coldspring" 
