@@ -28,13 +28,13 @@
 			</else>
 		</antcontrib:if>
 
-		<antcontrib:propertyregex override="yes" property="railo.version.major" input="${railo.version}" 
+		<antcontrib:propertyregex override="no" property="railo.version.major" input="${railo.version}" 
 			regexp="(\d)\.+.*" select="\1" />
-		<antcontrib:propertyregex override="yes" property="railo.version.minor" input="${railo.version}" 
+		<antcontrib:propertyregex override="no" property="railo.version.minor" input="${railo.version}" 
 			regexp="\d+\.(\d+)" select="\1" />
-		<antcontrib:propertyregex override="yes" property="railo.version.build" input="${railo.version}" 
+		<antcontrib:propertyregex override="no" property="railo.version.build" input="${railo.version}" 
 			regexp="\d+\.\d+\.(\d+)" select="\1" />
-		<antcontrib:propertyregex override="yes" property="railo.version.revision" input="${railo.version}" 
+		<antcontrib:propertyregex override="no" property="railo.version.revision" input="${railo.version}" 
 			regexp="\d+\.\d+\.\d+\.(\d+)+.*" select="\1" />
 		<echo message="Railo version: Major ${railo.version.major} Minor ${railo.version.minor} Build ${railo.version.build} Revision ${railo.version.revision}"/>
 

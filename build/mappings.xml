@@ -6,6 +6,8 @@
   <mapping physical="@src.dir@/cfwheels" virtual="/cfwheels"></mapping>
   <mapping physical="@src.dir@/coldbox" virtual="/coldbox"></mapping>
   <mapping physical="@src.dir@/fw1app" virtual="/fw1app"></mapping>
+  <mapping physical="@src.dir@/mxunit" virtual="/mxunit"></mapping>
   <mapping physical="@src.dir@/org" virtual="/org"></mapping>
+  <mapping physical="@src.dir@/taffy" virtual="/taffy"></mapping>
 </mappings>
 
