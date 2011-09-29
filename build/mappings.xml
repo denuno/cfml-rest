@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
 <mappings>
-<!--
-  <mapping physical="@src.dir@/cfdistro" virtual="/cfdistro"/>
- -->
+  <mapping physical="@src.dir@/MachII" virtual="/MachII"></mapping>
+  <mapping physical="@src.dir@/MachIIapp" virtual="/MachIIapp"></mapping>
+  <mapping physical="@src.dir@/cfwheels" virtual="/cfwheels"></mapping>
+  <mapping physical="@src.dir@/coldbox" virtual="/coldbox"></mapping>
+  <mapping physical="@src.dir@/fw1app" virtual="/fw1app"></mapping>
+  <mapping physical="@src.dir@/org" virtual="/org"></mapping>
 </mappings>
+

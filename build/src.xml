@@ -45,12 +45,12 @@
 <!--	ColdBox
  -->
 		<src dest="@src.dir@/coldbox" type="git" 
-		uri="http://github.com/ColdBox/coldbox-platform.git" 
+		uri="https://github.com/ColdBox/coldbox-platform.git" 
 		user="" password="" />
 <!--	ColdBox sample app
  -->
 		<src dest="@src.dir@/coldbox/samples" type="git" 
-		uri="https://github.com/ColdBox/coldbox-samples" 
+		uri="https://github.com/ColdBox/coldbox-samples.git" 
 		user="" password="" />
 
 <!--	Mach-II
