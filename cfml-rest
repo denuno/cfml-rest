@@ -1,23 +1,23 @@
 #! /bin/bash
 reldir=`dirname $0`
 cd $reldir/build
-export ANT_HOME=/Users/valliant/cfdistro/ant
+export ANT_HOME=$reldir/build/cfdistro/ant
 if [ -z "$1" ]; then
 echo "cfml-rest control script"
 OPTIONS="start stop help list-targets update exit"
 select opt in $OPTIONS; do
 if [ "$opt" = "start" ]; then
-	/Users/valliant/cfdistro/ant/bin/ant -f build/build.xml build.start.launch
+	cfdistro/ant/bin/ant -f build/build.xml build.start.launch
 	exit
 elif [ "$opt" = "stop" ]; then
-	/Users/valliant/cfdistro/ant/bin/ant -f build/build.xml server.stop
+	cfdistro/ant/bin/ant -f build/build.xml server.stop
 	exit
 elif [ "$opt" = "help" ]; then
 	echo "usage (skips this prompt): cfml-rest.sh [start|stop|{target}]"
 elif [ "$opt" = "list-targets" ]; then
-	/Users/valliant/cfdistro/ant/bin/ant -f build/build.xml help
+	cfdistro/ant/bin/ant -f build/build.xml help
 elif [ "$opt" = "update" ]; then
-	/Users/valliant/cfdistro/ant/bin/ant -f build/build.xml project.update
+	cfdistro/ant/bin/ant -f build/build.xml project.update
 elif [ "$opt" = "exit" ]; then
 	exit
 else
@@ -33,6 +33,6 @@ for var in "$@"
 do
     parameters="$parameters -D$var"
 done
-/bin/sh /Users/valliant/cfdistro/ant/bin/ant -f build.xml $target -Dbasedir=. $parameters
+/bin/sh cfdistro/ant/bin/ant -f build.xml $target -Dbasedir=. $parameters
 	
 			
