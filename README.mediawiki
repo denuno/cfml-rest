@@ -1,85 +1,84 @@
 
 = Making cfml-rest =
- <br>
+ 
 To start, we'll
-<br> <br> 
+  
 == create a skeleton: ==
- <br>
+ 
 cfdistro cfdistro.skeleton target.dir=/some/projects/cfml-rest distro.name=cfml-rest
-<br> <br>
+ 
 Next, we'll set up our target builds, which will be fw1.cfonz, machii.cfonz, etc.. 
-<br> <br>
+ 
 For now, we'll just set the host name
-<br> <br>
+ 
 build.fw1.properties:
-<br>
+
 server.host=fw1.cfoanz
-<br> <br>
+ 
 build.machii.properties
-<br>
+
 server.host=machii.cfoanz 
-<br> <br>
+ 
 etc..
-<br> <br>
+ 
 We'll
-<br> 
+ 
 == add the various source repositories ==
- <br>
+ 
 in build/src.xml.  If we wanted to, we could have separate src.fw1.xml, src.machii.xml, etc., but that's more for building builds, vs. building code we're gonna be working on interchangeably-ish.  Really there's a million options for how you want to deploy-- these could each easily be their own projects, for instance, if we weren't doing group example type deal here.
-<br> <br>
-build/src.xml <br>  
-<pre> &lt;src dest="@src.dir@/fw1/org" type="git" <br>
-uri="https://github.com/seancorfield/fw1.git"<br>
-path="/org" <br>
-user="" password="" /&gt;<br>
-<font  face="Verdana, Arial, Helvetica, sans-serif"><br>
+ 
+build/src.xml   
+<pre> &lt;src dest="@src.dir@/fw1/org" type="git" 
+uri="https://github.com/seancorfield/fw1.git"
+path="/org" 
+user="" password="" /&gt;
+<font  face="Verdana, Arial, Helvetica, sans-serif">
 </font> 
 </pre>
  
-<pre> The above is saying we're going to grab the sources form git and stick them in the /fw1/ base folder.  Because we've added this to the "sources" element in src.xml, it's not going to be linked to the source code of the project itself (in the "project" element of src.xml).  This means that we'll have our own copies of these sources, which we can commit to our project's source control, but we can "import" the latest from their respective repositories easily.<br>
-<br>
-The flow here is, you check out, say the FW/1 sources, commit them to your project's repo, and when a new version of FW/1 is out (or you want to experiment with a beta, or whatever) you can edit the src.xml file, or run "cfdistro src.import", to pull the stuff from the repo.  There's also a handy function somewhere in cfdistro that lets you create a patch for the project based off of what is in the main project repo (FW/1 in this case) and your local code (whatever changes you made to your local copy of FW/1).<br>
-<br>
+<pre> The above is saying we're going to grab the sources form git and stick them in the /fw1/ base folder.  Because we've added this to the "sources" element in src.xml, it's not going to be linked to the source code of the project itself (in the "project" element of src.xml).  This means that we'll have our own copies of these sources, which we can commit to our project's source control, but we can "import" the latest from their respective repositories easily.
+
+The flow here is, you check out, say the FW/1 sources, commit them to your project's repo, and when a new version of FW/1 is out (or you want to experiment with a beta, or whatever) you can edit the src.xml file, or run "cfdistro src.import", to pull the stuff from the repo.  There's also a handy function somewhere in cfdistro that lets you create a patch for the project based off of what is in the main project repo (FW/1 in this case) and your local code (whatever changes you made to your local copy of FW/1).
+
 Obviously this is all about making our lives as coders living with living code a bit easier. CLWLC FTW! 
 </pre>
 
 So, to continue, we're going to pull in the fw1 stuff and see if we can get our fw1.cfoanz host rolling.  We begin by typing &quot;cfdistro src.import&quot; in our project root.  Then we go get some coffee, because there's a bunch of freaking source we're downloading (fw/1, coldbox, machii, cfwheels, taffy).
-<br> <br>
+ 
 Once it's all downloaded,
-<br> 
+ 
 == let's set our base mapping.xml ==
 
 file by running &quot;cfdistro src.to.mappings.xml&quot;.  This will create a mappings.xml file set up to use the folders in our src directory for mappings.  
-<br> <br>
+ 
 Then we'll try to
-<br> 
+ 
 == run a build: ==
 
  &quot;cfdistro build&quot;
-<br> <br>
+ 
 Next, we'll
-<br> 
+ 
 == start the build ==
 
 in jetty server in the foreground &quot;cfdistro runwar.start.fg&quot; (you can run it in the background with &quot;runwar.start&quot;, but lets verify it'll start first!).  If all goes well, we'll now be able to open a browser to 127.0.0.1:8087 (the port is set in build/build.properties).
-<br> <br>
-Next, let's test our fw1 app by going to 127.0.0.1:8087/fw1app 
-<br> <br>
-We should get the fw/1 welcome screen, albiet without the CSS and whatnot (we'll address this in a bit).
-<br> <br>
-Maybe we should try the mach-ii app next?  We'll need to change the CHANGEME to /MachIIapp in the file !MachIIapp/config/mach-ii.xml, then hit up:
-<br> <br>
-127.0.0.1:8087/MachIIapp 
-<br> <br>
-Next we'll test out !CFWheels by going to:
-<br> <br>
-http://localhost:8087/cfwheels/
-<br> <br>
-And then coldbox via:
-<br> <br>
-http://localhost:8087/coldbox/samples/ 
-<br>
  
-<br>
+Next, let's test our fw1 app by going to 127.0.0.1:8087/fw1app 
+ 
+We should get the fw/1 welcome screen, albiet without the CSS and whatnot (we'll address this in a bit).
+ 
+Maybe we should try the mach-ii app next?  We'll need to change the CHANGEME to /MachIIapp in the file !MachIIapp/config/mach-ii.xml, then hit up:
+ 
+127.0.0.1:8087/MachIIapp 
+ 
+Next we'll test out !CFWheels by going to:
+ 
+http://localhost:8087/cfwheels/
+ 
+And then coldbox via:
+ 
+http://localhost:8087/coldbox/samples/ 
+ 
+
 We should see nice welcoming screens for all the above. 
-<br> 
+ 
