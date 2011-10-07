@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "http://db.apache.org/torque/dtd/database">
+<database name="cfartgallery">
+<table name="ART">
+<column name="ARTID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="true"/>
+<column name="ARTISTID" primaryKey="false" required="false" type="INTEGER" size="10" autoIncrement="false"/>
+<column name="ARTNAME" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+<column name="DESCRIPTION" primaryKey="false" required="false" type="CLOB" size="2147483647" autoIncrement="false"/>
+<column name="PRICE" primaryKey="false" required="false" type="DECIMAL" size="19" autoIncrement="false"/>
+<column name="LARGEIMAGE" primaryKey="false" required="false" type="VARCHAR" size="30" autoIncrement="false"/>
+<column name="MEDIAID" primaryKey="false" required="false" type="INTEGER" size="10" autoIncrement="false"/>
+<column name="ISSOLD" primaryKey="false" required="false" type="SMALLINT" size="5" autoIncrement="false"/>
+</table>
+<table name="ARTISTS">
+<column name="ARTISTID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="true"/>
+<column name="FIRSTNAME" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false"/>
+<column name="LASTNAME" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false"/>
+<column name="ADDRESS" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+<column name="CITY" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false"/>
+<column name="STATE" primaryKey="false" required="false" type="VARCHAR" size="2" autoIncrement="false"/>
+<column name="POSTALCODE" primaryKey="false" required="false" type="VARCHAR" size="10" autoIncrement="false"/>
+<column name="EMAIL" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+<column name="PHONE" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false"/>
+<column name="FAX" primaryKey="false" required="false" type="VARCHAR" size="12" autoIncrement="false"/>
+<column name="THEPASSWORD" primaryKey="false" required="false" type="VARCHAR" size="8" autoIncrement="false"/>
+</table>
+<table name="GALLERYADMIN">
+<column name="GALLERYADMINID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="true"/>
+<column name="FIRSTNAME" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false"/>
+<column name="LASTNAME" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false"/>
+<column name="EMAIL" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+<column name="ADMINPASSWORD" primaryKey="false" required="false" type="VARCHAR" size="8" autoIncrement="false"/>
+</table>
+<table name="MEDIA">
+<column name="MEDIAID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="true"/>
+<column name="MEDIATYPE" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+</table>
+<table name="ORDERITEMS">
+<column name="ORDERITEMID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="true"/>
+<column name="ORDERID" primaryKey="false" required="false" type="INTEGER" size="10" autoIncrement="false"/>
+<column name="ARTID" primaryKey="false" required="false" type="INTEGER" size="10" autoIncrement="false"/>
+<column name="PRICE" primaryKey="false" required="false" type="DECIMAL" size="19" autoIncrement="false"/>
+</table>
+<table name="ORDERS">
+<column name="ORDERID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="true"/>
+<column name="TAX" primaryKey="false" required="false" type="DECIMAL" size="19" autoIncrement="false"/>
+<column name="TOTAL" primaryKey="false" required="false" type="DECIMAL" size="19" autoIncrement="false"/>
+<column name="ORDERDATE" primaryKey="false" required="false" type="TIMESTAMP" size="26,6" autoIncrement="false"/>
+<column name="ORDERSTATUSID" primaryKey="false" required="false" type="INTEGER" size="10" autoIncrement="false"/>
+<column name="CUSTOMERFIRSTNAME" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+<column name="CUSTOMERLASTNAME" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+<column name="ADDRESS" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+<column name="CITY" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+<column name="STATE" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+<column name="POSTALCODE" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+<column name="PHONE" primaryKey="false" required="false" type="VARCHAR" size="50" autoIncrement="false"/>
+</table>
+<table name="ORDERSTATUS">
+<column name="ORDERSTATUSID" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="true"/>
+<column name="STATUS" primaryKey="false" required="false" type="VARCHAR" size="15" autoIncrement="false"/>
+</table>
+</database>

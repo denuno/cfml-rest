@@ -28,19 +28,46 @@
 		<urlrewriteout name="pubToRoot" from="^/pub/(.*)" to="/$1"/>
 		<urlrewriteout name="rootToContextPath" from="/(.*)" to="%{context-path}/$1" type="forward"/>
 		-->
-	</target>	
+		<antcontrib:switch value="${build.type}">
+			<case value="taffy">
+				<dsn-import dsn="cfartgallery" schemafile="${basedir}/dsndata/cfartgallery.ddl.xml" datafile="${basedir}/cfartgallery.dml.xml" />
+				<servlet-mapping physical="${src.dir}/taffyapp/api" virtual="/taffyapp/api" />
+			</case>
+			<case value="cfwheels">
+				<dsn-import dsn="cfwheelsUserAdministration" schemafile="${basedir}/dsndata/cfwheelsUserAdministration.ddl.xml" />
+			</case>
+			<default>
+			</default>
+		</antcontrib:switch>
+		<echo file="${war.target.dir}/index.cfm"><![CDATA[<cflocation url="${redirect.location}"/> ]]></echo>
+	</target>
+
+	<target name="build.all">
+		<cfdistro target="jetty.install" />
+		<cfdistro target="build" properties="build.type=taffy" />
+		<cfdistro target="jetty.configure" properties="build.type=taffy" />
+		<cfdistro target="build" properties="build.type=machii" />
+		<cfdistro target="jetty.configure" properties="build.type=machii" />
+		<cfdistro target="build" properties="build.type=cfwheels" />
+		<cfdistro target="jetty.configure" properties="build.type=cfwheels" />
+		<cfdistro target="build" properties="build.type=coldbox" />
+		<cfdistro target="jetty.configure" properties="build.type=coldbox" />
+		<cfdistro target="build" properties="build.type=fw1" />
+		<cfdistro target="jetty.configure" properties="build.type=fw1" />
+		<echo message="run this to watch jetty start (not in background): cfdistro jetty.start background=false"/>
+	</target>
 
 	<!-- these are just here for the Eclipse Ant UI ordering -->
 	<target name="build.start.launch">
 		<antcontrib:runtarget target="cfdistro.build.start.launch" />
-	</target>	
+	</target>
 
 	<target name="build.start" depends="build">
 		<antcontrib:runtarget target="server.start" />
-	</target>	
+	</target>
 
 	<target name="build.stop">
 		<antcontrib:runtarget target="server.stop" />
-	</target>	
-	
+	</target>
+
 </project>

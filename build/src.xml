@@ -18,11 +18,18 @@
 		uri="http://mxunit.googlecode.com/svn/mxunit/trunk"
 		user="" password="" />
 -->
+
 <!--	CFWheels
  -->
 		<src dest="@src.dir@/cfwheels" type="svn" 
 		uri="http://cfwheels.googlecode.com/svn/trunk/" 
 		user="" password="" />
+<!--	CFWheels sample administration app
+ -->
+		<src dest="@src.dir@/cfwheels" type="svn" 
+		uri="http://cfwheels.googlecode.com/svn/branches/sample-administration/" 
+		user="" password="" />
+
 <!--	Model-Glue
 		<src dest="@src.dir@/ModelGlue" type="svn" 
 		uri="http://svn.model-glue.com/trunk/ModelGlue/" 
@@ -61,7 +68,7 @@
 
 <!--	Mach-II skeleton for use with the above
  -->
-		<src dest="@src.dir@/MachIIapp" type="svn" 
+		<src dest="@src.dir@/machiiapp" type="svn" 
 		uri="http://svn.mach-ii.com/machii/skeleton/1-8-0/trunk/" 
 		user="" password="" />
 		
@@ -70,7 +77,14 @@
 		<src dest="@src.dir@/taffy" type="git" 
 		uri="https://github.com/atuttle/Taffy.git" 
 		user="" password="" branch="Railo" />
-		
+<!--	Taffy REST framework example app and api
+ -->
+		<src dest="@src.dir@/taffyapp/api" type="git" 
+		uri="https://github.com/atuttle/Taffy.git" 
+		user="" password="" branch="Railo" path="examples/api"/>
+		<src dest="@src.dir@/taffyapp/consumer" type="git" 
+		uri="https://github.com/atuttle/Taffy.git" 
+		user="" password="" branch="Railo" path="examples/consumer"/>
 		
 <!--	ColdSpring 1.2
 		<src dest="./" type="cvs" 
