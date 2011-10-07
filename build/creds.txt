@@ -4,3 +4,5 @@
 #gmail.password=fournick8
 dsn.username=sa
 dsn.password=
+cfwheels.dsn.username=sa
+cfwheels.dsn.password=
