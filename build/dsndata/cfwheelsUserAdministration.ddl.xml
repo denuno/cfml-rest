@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "http://db.apache.org/torque/dtd/database">
+<database name="cfwheelsUserAdministration">
+<table name="users">
+<column name="id" primaryKey="true" required="true" type="INTEGER" size="10" autoIncrement="true"/>
+<column name="firstname" primaryKey="false" required="false" type="VARCHAR" size="100" autoIncrement="false"/>
+<column name="lastname" primaryKey="false" required="false" type="VARCHAR" size="100" autoIncrement="false"/>
+<column name="email" primaryKey="false" required="false" type="VARCHAR" size="100" autoIncrement="false"/>
+<column name="password" primaryKey="false" required="false" type="VARCHAR" size="20" autoIncrement="false"/>
+</table>
+</database>
