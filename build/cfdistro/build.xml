@@ -568,7 +568,7 @@
 		<attribute name="target" />
 		<attribute name="properties" default=""/>
 		<sequential>
-			<echo message="running cfdistro @{target}" />
+			<echo message="running cfdistro @{target} (@{properties})" />
 			<exec executable="sh" dir="${basedir}/../" failifexecutionfails="true" os="Linux,Mac OS X">
 				<arg line="${cfdistro.basedir}/bin/cfdistro @{target} @{properties}" />
 			</exec>

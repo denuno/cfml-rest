@@ -7,9 +7,10 @@ SHIFT
 IF "%1"=="" GOTO Continue
 SET var1=%var1% -D%1%
 SHIFT
+SET var1=%var1%=%1%
+SHIFT
 GOTO Loop
 :Continue
-echo %CD%\build\cfdistro\ant\bin\ant.bat
 call %CD%\build\cfdistro\ant\bin\ant.bat -f build/build.xml %var1%
 goto end
 :error
@@ -17,5 +18,3 @@ echo usage:
 echo cfdistro.bat start
 echo cfdistro.bat stop
 :end
-		
-		

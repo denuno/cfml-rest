@@ -30,7 +30,7 @@
 		-->
 		<antcontrib:switch value="${build.type}">
 			<case value="taffy">
-				<dsn-import dsn="cfartgallery" schemafile="${basedir}/dsndata/cfartgallery.ddl.xml" datafile="${basedir}/cfartgallery.dml.xml" />
+				<dsn-import dsn="cfartgallery" schemafile="${basedir}/dsndata/cfartgallery.ddl.xml" datafile="${basedir}/dsndata/cfartgallery.dml.xml" />
 				<servlet-mapping physical="${src.dir}/taffyapp/api" virtual="/taffyapp/api" />
 			</case>
 			<case value="cfwheels">
