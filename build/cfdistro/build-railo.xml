@@ -27,21 +27,16 @@
 				<antcontrib:var name="railo.version" value="${railo.patch.version}" />
 			</else>
 		</antcontrib:if>
+		
+		<version-splitter property="railo.version" version="${railo.version}"/>
 
-		<antcontrib:propertyregex override="no" property="railo.version.major" input="${railo.version}" 
-			regexp="(\d)\.+.*" select="\1" />
-		<antcontrib:propertyregex override="no" property="railo.version.minor" input="${railo.version}" 
-			regexp="\d+\.(\d+)" select="\1" />
-		<antcontrib:propertyregex override="no" property="railo.version.build" input="${railo.version}" 
-			regexp="\d+\.\d+\.(\d+)" select="\1" />
-		<antcontrib:propertyregex override="no" property="railo.version.revision" input="${railo.version}" 
-			regexp="\d+\.\d+\.\d+\.(\d+)+.*" select="\1" />
 		<echo message="Railo version: Major ${railo.version.major} Minor ${railo.version.minor} Build ${railo.version.build} Revision ${railo.version.revision}"/>
 
 		<property name="ext.railo.war.version" value="${railo.version.major}.${railo.version.minor}.${railo.version.build}.000" />
 		<property name="ext.railo.dir" value="${ext.dir}/railo/${railo.version.major}" />
 		<property name="ext.railo.war.uri" value="http://www.getrailo.org/railo/remote/download/${ext.railo.war.version}/custom/all/railo-${ext.railo.war.version}.war" />
 		<property name="ext.railo.war" value="${ext.railo.dir}/railo-${ext.railo.war.version}.war" />
+		<antcontrib:var name="cfml.engine.war" value="${ext.railo.war}" />
 		<mkdir dir="${ext.railo.dir}"/>
 		<mkdir dir="${ext.railo.dir}/patches"/>
 
@@ -70,6 +65,10 @@
 
 	<target name="railo.war.init" depends="clean,railo.requires">		
 		<unzip src="${ext.railo.war}" dest="${war.target.dir}"/>
+		<!-- hack for bad xml in 3.3.1 -->
+		<replace file="${war.target.dir}/WEB-INF/web.xml" value="">
+		  <replacetoken><![CDATA[< !-- this id must be unique for every defintion of the MessageBrokerServlet -- >]]></replacetoken>
+		</replace>
 		<property name="extracted" location="${java.io.tmpdir}/extracted"/> 
 		<mkdir dir="${extracted}"/> 
 		<unzip src="${war.target.dir}/WEB-INF/lib/railo.jar" dest="${extracted}">
@@ -83,7 +82,7 @@
 	        </patternset> 
 		</unzip>
 		<copy file="${extracted}/resource/config/server.xml" tofile="${railo.server.config.file}" overwrite="true" />
-		<copy file="${extracted}/resource/config/web.xml" tofile="${war.target.dir}/WEB-INF/railo/railo-web.xml.cfm" overwrite="true" />
+		<copy file="${extracted}/resource/config/web.xml" tofile="${railo.web.config.dir}/railo-web.xml.cfm" overwrite="true" />
 		<delete dir="${extracted}"/> 
 		<antcontrib:if>
 			<equals arg1="${server.sharedlibs}" arg2="true" />
@@ -103,11 +102,16 @@
 			<remove path="web-app/servlet[servlet-class/text()='railo.loader.servlet.FileServlet']" />
 			<remove path="web-app/servlet-mapping[servlet-name/text()='FileServlet']" />
 		</xmltask>
+		<!-- set the WAR relative railo config dirs for server and web -->
+		<relpath from="${war.target.dir}" to="${railo.web.config.dir}" property="railo.initparam.web-config" />
+		<relpath from="${war.target.dir}" to="${railo.server.config.dir}" property="railo.initparam.server-config" />
 		<xmltask source="${war.target.dir}/WEB-INF/web.xml" dest="${war.target.dir}/WEB-INF/web.xml">
 			<xmlcatalog refId="commonDTDs" />
-			<replace path="web-app/servlet[servlet-class/text()='railo.loader.servlet.CFMLServlet']/init-param[param-value/text()='/WEB-INF/railo/']/param-value/text()" withText="./WEB-INF/railo/" />
+			<replace path="web-app/servlet[servlet-class/text()='railo.loader.servlet.CFMLServlet']/init-param[param-value/text()='/WEB-INF/railo/']/param-value/text()" withText="{web-root-directory}/${railo.initparam.web-config}" />
+			<!-- TODO: railo-server-root must be an absolute path if set at all, basically.
 			<insert path="web-app/servlet[servlet-class/text()='railo.loader.servlet.CFMLServlet']" position="under">
-			<![CDATA[<init-param><param-name>railo-server-root</param-name><param-value>/</param-value></init-param>]]></insert>
+			<![CDATA[<init-param><param-name>railo-server-root</param-name><param-value>${railo.initparam.server-config}</param-value></init-param>]]></insert>
+			-->
 		</xmltask>
 		<!-- needed if deployed to jboss -->
 		<mkdir dir="${ext.dir}/jboss" />

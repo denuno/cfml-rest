@@ -25,7 +25,6 @@
 	</path>
 	<taskdef resource="net/sf/antcontrib/antlib.xml" uri="antlib:net.sf.antcontrib" classpath="${cfdistro.basedir}/ant/lib/ant-contrib.jar" />
 	<property name="build.sysclasspath" value="ignore"/>
-	<!--
 	<taskdef resource="net/jtools/classloadertask/antlib.xml" classpath="${cfdistro.basedir}/ant/lib/ant-classloadertask.jar" />
 	<antcontrib:trycatch>
 		<try>
@@ -73,13 +72,14 @@
 			</antcontrib:trycatch>
 		</catch>
 	</antcontrib:trycatch>
+	<!--
 	-->
 	<property name="dist.root.dir.abs" location="${dist.root.dir}" />
 
 	<antcontrib:var name="dist.root.dir" value="${dist.root.dir.abs}" />
 
 	<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpath="${cfdistro.basedir}/lib/xmltask-v1.16.1.jar" />
-	<taskdef name="sshsession" classname="org.apache.tools.ant.taskdefs.optional.ssh.SSHSession"  classpathref="build.lib.path" />
+	<taskdef name="sshsession" classname="org.apache.tools.ant.taskdefs.optional.ssh.SSHSession" classpath="${cfdistro.basedir}/ant/lib/ant.jar" />
 	<taskdef name="sshexec" classname="org.apache.tools.ant.taskdefs.optional.ssh.SSHExec" classpathref="build.lib.path" />
 	<!--
 		<taskdef name="mxunittask" classname="org.mxunit.ant.MXUnitAntTask" classpath="lib/mxunit-ant.jar" />
@@ -128,7 +128,7 @@
 			<echo file="${temp.dir}/requires-ext.txt" message="${fixedSlashes}${line.separator}" append="true" />
 			-->
 			<sanitizePath property="fixedSlashes" input="@{resource}" />
-			<add-required extpath="${ext.dir}/${extfile}"/>
+			<add-required extpath="@{resource}"/>
 			<antcontrib:propertyregex override="yes" property="extfile" input="${fixedSlashes}" regexp=".*/ext/(.*)" select="\1" />
 			<antcontrib:if>
 				<available file="${ext.dir}/${extfile}" />
@@ -210,6 +210,7 @@
 	<import file="build-dmg.xml" />
 	<import file="installer/build.xml" />
 	<import file="cache/infinispan.xml" />
+	<import file="cache/ehcache.xml" />
 	<import file="testing/jmeter.xml" />
 	<import file="httpd/build.xml" />
 	<import file="httpd/nginx.xml" />
@@ -563,6 +564,18 @@
 		</sequential>
 	</macrodef>
 
+	<macrodef name="cfdistro">
+		<attribute name="target" />
+		<attribute name="properties" default=""/>
+		<sequential>
+			<echo message="running cfdistro @{target}" />
+			<exec executable="sh" dir="${basedir}/../" outputproperty="cfdistro.results" failifexecutionfails="true">
+				<arg line="${cfdistro.basedir}/bin/cfdistro @{target} @{properties}" />
+			</exec>
+			<echo message="${cfdistro.results}"/>
+		</sequential>
+	</macrodef>
+	
 	<macrodef name="build-if-not-built">
 		<sequential>
 			<antcontrib:if>
@@ -607,10 +620,10 @@
 			</xmltask>
 			<antcontrib:switch value="${mapping.exists}">
 				<case value="@{virtual}">
-					<echo message="mappings.xml [updated] - @{virtual}	@{physical} (@{physical})" />
+					<echo message="mappings.xml [updated] - @{virtual}	[@{physical}] (@{physical})" />
 				</case>
 				<default>
-					<echo message="mappings.xml [added] - @{virtual} 	@{physical} (@{physical})" />
+					<echo message="mappings.xml [added] - @{virtual} 	[@{physical}] (@{physical})" />
 				</default>
 			</antcontrib:switch>
 			<antcontrib:if>

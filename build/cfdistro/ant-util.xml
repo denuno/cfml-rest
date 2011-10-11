@@ -64,12 +64,12 @@
 		      // Imports: Helper classes for Files
 		      importClass(Packages.org.apache.tools.ant.util.FileUtils);
 		      importClass(Packages.java.io.File);
+		      importClass(Packages.java.lang.System);
 		     
 		      // Access to the attributes
 		      propName = attributes.get("property");
 		      baseFile = new File(attributes.get("to"));
 		      file     = new File(attributes.get("from"));
-		     
 		      // The relative
 		      relPath = FileUtils.getRelativePath(file, baseFile);
 		      if (!file.isDirectory()) {
@@ -87,9 +87,80 @@
 	  <attribute name="from"/>
 	  <attribute name="to"/>
 		<sequential>
-			<antcontrib:var name="relpathprop" unset="true" />
-			<relpath-js property="relpathprop" from="@{from}" to="@{to}" />
-			<antcontrib:var name="@{property}" value="${relpathprop}" />			
+			<antcontrib:var name="___relpathprop" unset="true" />
+			<antcontrib:var name="___relpathfrom" unset="true" />
+			<antcontrib:var name="___relpathto" unset="true" />
+			<property name="___relpathfrom" location="@{from}" />
+			<property name="___relpathto" location="@{to}" />
+			<relpath-js property="___relpathprop" from="${___relpathfrom}" to="${___relpathto}" />
+			<antcontrib:var name="@{property}" value="${___relpathprop}" />			
+			<antcontrib:var name="___relpathprop" unset="true" />
+			<antcontrib:var name="___relpathfrom" unset="true" />
+			<antcontrib:var name="___relpathto" unset="true" />
+		</sequential>
+	</macrodef>
+	
+
+	<macrodef name="version-splitter" description="splits a @{version} (3.9.12.333) into @{property}.major (3)  @{property}.minor (9) @{property}.build (12) @{property}.revision (333).  Optionally bumps one of [major|minor|build|revision] if specified.">
+	  <attribute name="version"/>
+	  <attribute name="property"/>
+	  <attribute name="bump" default=""/>
+		<sequential>
+			<antcontrib:propertyregex override="no" property="@{property}.major" input="@{version}" 
+				regexp="(\d)\.+.*" select="\1" />
+			<antcontrib:propertyregex override="no" property="@{property}.minor" input="@{version}" 
+				regexp="\d+\.(\d+)" select="\1" />
+			<antcontrib:propertyregex override="no" property="@{property}.build" input="@{version}" 
+				regexp="\d+\.\d+\.(\d+)" select="\1" />
+			<property name="@{property}.build" value="00" />
+			<antcontrib:propertyregex override="no" property="@{property}.revision" input="@{version}" 
+				regexp="\d+\.\d+\.\d+\.(\d+)+.*" select="\1" />
+			<property name="@{property}.revision" value="000" />
+			<antcontrib:var name="@{property}.long" value="${@{property}.major}.${@{property}.minor}.${@{property}.build}.${@{property}.revision}" />
+			<mkdir dir="${temp.dir}"/>
+			<echoproperties destfile="${temp.dir}/version.temp.properties" prefix="@{property}"/>
+			<antcontrib:var name="@{property}.major" unset="true" />
+			<antcontrib:var name="@{property}.minor" unset="true" />
+			<antcontrib:var name="@{property}.build" unset="true" />
+			<antcontrib:var name="@{property}.revision" unset="true"/>
+			<antcontrib:switch value="@{bump}">
+				  <case value="major">
+				    <propertyfile  file="${temp.dir}/version.temp.properties">
+			            <entry key="@{property}.major" type="int" operation="+" value="1" pattern="00"/>
+			            <entry key="@{property}.minor" type="int" value="0" pattern="00"/>
+			            <entry key="@{property}.build" type="int" value="0" pattern="00"/>
+			            <entry key="@{property}.revision" type="int" value="0" pattern="000"/>
+				    </propertyfile>
+				  	<echo message="bumped major" />
+				  </case>
+				  <case value="minor">
+				    <propertyfile  file="${temp.dir}/version.temp.properties">
+			            <entry key="@{property}.major" type="int" operation="+" value="1" pattern="00"/>
+			            <entry key="@{property}.build" type="int" value="0" pattern="00"/>
+			            <entry key="@{property}.revision" type="int" value="0" pattern="000"/>
+				    </propertyfile>
+				  	<echo message="bumped minor" />
+				  </case>
+				  <case value="build">
+				    <propertyfile  file="${temp.dir}/version.temp.properties">
+			            <entry key="@{property}.build" type="int" operation="+" value="1" pattern="00"/>
+			            <entry key="@{property}.revision" type="int" value="0" pattern="000"/>
+				    </propertyfile>
+				  	<echo message="bumped build" />
+				  </case>
+				  <case value="revision">
+				    <propertyfile  file="${temp.dir}/version.temp.properties">
+				            <entry key="@{property}.revision" type="int" operation="+" value="1" pattern="000"/>
+				    </propertyfile>
+				  	<echo message="bumped revision" />
+				  </case>
+				  <default>
+				    <antcontrib:var file="${temp.dir}/version.temp.properties" />
+				  </default>
+			</antcontrib:switch>
+		    <property file="${temp.dir}/version.temp.properties"/>
+			<antcontrib:var name="@{property}.long" value="${@{property}.major}.${@{property}.minor}.${@{property}.build}.${@{property}.revision}" />
+			<echo message="Version ${@{property}.long}: Major ${@{property}.major} Minor ${@{property}.minor} Build ${@{property}.build} Revision ${@{property}.revision}"/>
 		</sequential>
 	</macrodef>
 	
@@ -178,10 +249,10 @@
 					<!-- note="do it twice to catch any already defined deals" -->
 					<antcontrib:var file="${basedir}/build.@{buildtype}.properties" />
 					<antcontrib:var file="${basedir}/build.@{buildtype}.properties" />
-					<echo message="loaded custom properties: build.@{buildtype}.properties" />
+					<echo message="loaded custom properties: ${basedir}/build.@{buildtype}.properties" />
 				</try>
 				<catch>
-					<echo message="no custom properties: build.@{buildtype}.properties" />
+					<echo message="no custom properties: ${basedir}/build.@{buildtype}.properties" />
 					<antcontrib:trycatch>
 						<try>
 							<!-- note="do it twice to catch any already defined deals" -->
@@ -190,7 +261,7 @@
 							<echo message="loaded built-in custom properties: ${cfdistro.basedir}/build.@{buildtype}.properties" />
 						</try>
 						<catch>
-							<echo message="no built-in custom properties: build.@{buildtype}.properties" />
+							<echo message="no built-in custom properties: ${cfdistro.basedir}/build.@{buildtype}.properties" />
 						</catch>
 					</antcontrib:trycatch>
 				</catch>
@@ -290,12 +361,25 @@
 		<sequential>
 			<antcontrib:var unset="true" name="@{property}" />
 			<tempfile property="__xml_file.temp" />
-			<echoxml file="${__xml_file.temp}" namespacePolicy="@{namespacePolicy}"><xml/></echoxml>
+			<echoxml file="${__xml_file.temp}" namespacePolicy="@{namespacePolicy}"><xml___holder><xml/></xml___holder></echoxml>
 			<replace file="${__xml_file.temp}">
+			<replacefilter>
 			  <replacetoken><![CDATA[<?xml version="1.0" encoding="UTF-8"?>]]></replacetoken>
 			  <replacevalue></replacevalue>
-			</replace>		
-			<loadfile  srcFile="${__xml_file.temp}" property="@{property}" />
+			</replacefilter>
+			<replacefilter>
+			  <replacetoken><![CDATA[<xml___holder>]]></replacetoken>
+			  <replacevalue></replacevalue>
+			</replacefilter>
+			<replacefilter>
+			  <replacetoken><![CDATA[</xml___holder>]]></replacetoken>
+			  <replacevalue></replacevalue>
+			</replacefilter>
+			</replace>
+			<loadfile srcFile="${__xml_file.temp}" property="@{property}" />
+			<antcontrib:propertyregex property="@{property}" override="true" input="${@{property}}" 
+				regexp="^[\s]+|[\s]+$" replace="" casesensitive="false" />
+
 		</sequential>
 	</macrodef>
 
@@ -503,4 +587,46 @@
 	  		<delete file="pid.out.file" />
 		</sequential>
 	</macrodef>	
+
+	<macrodef name="web-inf-servlet">
+ 		<attribute name="web.xml.path" default="${war.target.dir}/WEB-INF/web.xml"/>
+		<attribute name="servletName" />
+		<attribute name="servletClass" />
+		<element name="init-params" implicit="false" />
+		<element name="servlet-mappings" implicit="false" />
+		<sequential>
+			<add-required extpath="@{dest}" />
+			<antcontrib:if>
+				<available file="@{dest}" />
+				<then/>
+				<else>
+					<get src="@{src}" dest="@{dest}" verbose="@{verbose}" ignoreerrors="@{ignoreerrors}" />
+				</else>
+			</antcontrib:if>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="web-inf-filter">
+ 		<attribute name="web.xml.path" default="${war.target.dir}/WEB-INF/web.xml"/>
+		<attribute name="filter-name" />
+		<attribute name="filter-class" />
+		<element name="init-params" implicit="false" />
+		<element name="filter-mappings" implicit="false" />
+		<sequential>
+			<antcontrib:var name="filters.exist" unset="true" />
+	    	<xml-to-property property="__initparams"><init-params/></xml-to-property>
+	    	<echo>${__initparams}</echo>
+			<xmltask source="@{web.xml.path}" dest="@{web.xml.path}">
+				<xmlcatalog refId="commonDTDs" />
+				<remove path="web-app/filter[filter-name/text()='@{filter-name}']"/>
+				<copy path="web-app/filter/@filter-name" attrValue="true" property="filters.exist" />
+				<insert path="web-app/filter" position="after" if="filters.exist">
+				<![CDATA[<filter><filter-name>@{filter-name}</filter-name><filter-class>@{filter-class}</filter-class>${__initparams}</filter>]]></insert>
+				<insert path="web-app/servlet[1]" position="before" unless="filters.exist">
+				<![CDATA[<filter><filter-name>@{filter-name}</filter-name><filter-class>@{filter-class}</filter-class>${__initparams}</filter>]]></insert>
+			</xmltask>
+		</sequential>
+	</macrodef>
+	
+	
 </project>

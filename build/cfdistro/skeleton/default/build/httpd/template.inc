@@ -18,3 +18,7 @@ RewriteEngine on
 Include @httpd.host.dir@/security.rewrites.conf
 RewriteRule   ^\@war.contextpath@\/(.+)	/$1 [R,QSA,L]
 RewriteRule   ^\/(.+)\.cfm(.+)?	http://@server.host@:@server.port.http@@war.contextpath@/$1.cfm$2 [P,QSA,L]
+
+#RewriteRule ^(.+\.cf[cm])$	http://@server.host@:@server.port.http@@war.contextpath@/$1 [P,QSA,L]
+#RewriteCond %{DOCUMENT_ROOT}%{REQUEST_FILENAME} !-f
+#RewriteRule   ^\/(.+)?	http://@server.host@:@server.port.http@@war.contextpath@/$1 [P,QSA,L]

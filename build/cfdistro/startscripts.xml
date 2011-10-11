@@ -65,7 +65,7 @@ do
     props="$props -D$var"
 done
 #echo $reldir/../ant/bin/ant -f $reldir/build.xml $target $props
-/bin/sh $reldir/../ant/bin/ant -f $reldir/../build.xml $target -Dbasedir=. $props]]>
+/bin/sh $reldir/../ant/bin/ant -f build/build.xml $target -Dcfdistro.build.file=$reldir/../build.xml $props]]>
 		</echo>
 		<chmod file="${basedir}/bin/cfdistro" perm="ugo+rx"/>
 		<echo file="${basedir}/bin/cfdistro.bat"><![CDATA[@echo off
