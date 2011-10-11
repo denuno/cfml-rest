@@ -1,7 +1,15 @@
 @echo off
 set ANT_HOME=%CD%\build\cfdistro\ant\
 if "%1" == "" goto MENU
-call build\cfdistro\ant\bin\ant.bat -f build/build.xml %*
+set var1=%1
+SHIFT
+:Loop
+IF "%1"=="" GOTO Continue
+SET var1=%var1% -D%1%
+SHIFT
+GOTO Loop
+:Continue
+call build\cfdistro\ant\bin\ant.bat -f build/build.xml %var1%
 goto end
 :MENU
 cls

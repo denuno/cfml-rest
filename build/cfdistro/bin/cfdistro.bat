@@ -1,7 +1,16 @@
 @echo off
 if "%1" == "" goto error
-set ANT_HOME=%CD%\..\ant\
-call %CD%\..\ant\bin\ant.bat -f %CD%\build.xml %1
+set ANT_HOME=%CD%\build\cfdistro\ant\
+set var1=%1
+SHIFT
+:Loop
+IF "%1"=="" GOTO Continue
+SET var1=%var1% -D%1%
+SHIFT
+GOTO Loop
+:Continue
+echo %CD%\build\cfdistro\ant\bin\ant.bat
+call %CD%\build\cfdistro\ant\bin\ant.bat -f build/build.xml %var1%
 goto end
 :error
 echo usage:

@@ -569,10 +569,12 @@
 		<attribute name="properties" default=""/>
 		<sequential>
 			<echo message="running cfdistro @{target}" />
-			<exec executable="sh" dir="${basedir}/../" outputproperty="cfdistro.results" failifexecutionfails="true">
+			<exec executable="sh" dir="${basedir}/../" failifexecutionfails="true" os="Linux,Mac OS X">
 				<arg line="${cfdistro.basedir}/bin/cfdistro @{target} @{properties}" />
 			</exec>
-			<echo message="${cfdistro.results}"/>
+			<exec executable="cmd" dir="${basedir}/../" failifexecutionfails="true" os="Windows,Windows 7">
+				<arg line="/c ${cfdistro.basedir}\bin\cfdistro.bat @{target} @{properties}" />
+			</exec>
 		</sequential>
 	</macrodef>
 	
