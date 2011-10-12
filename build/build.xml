@@ -3,7 +3,7 @@
 	<loadproperties srcfile="build.properties"/>
 	<import file="${cfdistro.build.file}"/>
 
-	<target name="build" depends="cfdistro.build">
+	<target name="build" depends="exists.src.dir,cfdistro.build">
 		<!-- add mappings -->
 		<!--
 		<mapping physical="${basedir}/../../docs" virtual="/docs"/>
