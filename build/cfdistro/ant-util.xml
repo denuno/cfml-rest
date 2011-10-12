@@ -38,7 +38,7 @@
 					<echo file="${basedir}/requires.txt" message="" />
 				</else>
 			</antcontrib:if>
-			<antcontrib:propertyregex override="yes" property="extpath" input="@{extpath}" regexp=".*/ext/(.*)" select="\1" />
+			<antcontrib:propertyregex override="yes" property="extpath" input="@{extpath}" regexp=".*[\\/]ext[\\/](.*)" select="\1" />
 			<antcontrib:var name="requires.content" unset="true" />
 			<antcontrib:var name="add-required-path.exists" unset="true" />
 			<loadfile property="requires.content" srcFile="${basedir}/requires.txt" />
