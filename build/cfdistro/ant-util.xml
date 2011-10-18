@@ -38,7 +38,8 @@
 					<echo file="${basedir}/requires.txt" message="" />
 				</else>
 			</antcontrib:if>
-			<antcontrib:propertyregex override="yes" property="extpath" input="@{extpath}" regexp=".*[\\/]ext[\\/](.*)" select="\1" />
+			<escape-windows-slashes property="___extpath" input="@{extpath}"/>
+			<antcontrib:propertyregex override="yes" property="extpath" input="${___extpath}" regexp=".*[\\/]ext[\\/](.*)" select="\1" />
 			<antcontrib:var name="requires.content" unset="true" />
 			<antcontrib:var name="add-required-path.exists" unset="true" />
 			<loadfile property="requires.content" srcFile="${basedir}/requires.txt" />
@@ -238,6 +239,16 @@
 				input="${@{property}}" regexp="http(.)?:/" replace="http\1://"
 				global="true" override="yes" />
 			<echo>${@{property}}</echo>
+		</sequential>
+	</macrodef>
+
+	<macrodef name="escape-windows-slashes">
+		<attribute name="input" />
+		<attribute name="property" />
+		<sequential>
+			<antcontrib:propertyregex property="@{property}"
+				input="@{input}" regexp="\\" replace="\\\\" global="true"
+				override="yes" defaultValue="@{input}" />
 		</sequential>
 	</macrodef>
 
