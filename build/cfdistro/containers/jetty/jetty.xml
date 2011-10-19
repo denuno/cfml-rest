@@ -10,7 +10,7 @@
 	<property name="server.sharedlibs" value="false"/>
 
 	<property name="jetty.version" value="7" />
-	<property name="jetty.version.minor" value="5.1.v20110908" />
+	<property name="jetty.version.minor" value="5.3.v20111011" />
 	<property name="jetty.host" value="${server.host}"/>
 	<property name="jetty.host.aliases" value=""/>
 	<property name="ext.jetty.dir" location="${ext.dir}/jetty/${jetty.version}" />
