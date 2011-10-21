@@ -42,8 +42,9 @@
 		<echo file="${war.target.dir}/index.cfm"><![CDATA[<cflocation url="${redirect.location}"/> ]]></echo>
 	</target>
 
-	<target name="build.all">
+	<target name="build.all" depends="exists.src.dir">
 		<cfdistro target="jetty.install" />
+		<cfdistro target="ehcache.war.install" properties="ehcache.war=${jetty.dir}/webapps/ehcache"/>
 		<cfdistro target="build" properties="build.type=taffy" />
 		<cfdistro target="jetty.configure" properties="build.type=taffy" />
 		<cfdistro target="build" properties="build.type=machii" />
@@ -55,6 +56,15 @@
 		<cfdistro target="build" properties="build.type=fw1" />
 		<cfdistro target="jetty.configure" properties="build.type=fw1" />
 		<echo message="run this to watch jetty start (not in background): cfdistro jetty.start background=false"/>
+		<echo message="then open a browser to: http://${server.host}:${server.port.http}/${redirect.location}"/>
+	</target>
+
+	<target name="hosts.all">
+		<cfdistro target="server.etc.hosts" properties="build.type=taffy" />
+		<cfdistro target="server.etc.hosts" properties="build.type=machii" />
+		<cfdistro target="server.etc.hosts" properties="build.type=cfwheels" />
+		<cfdistro target="server.etc.hosts" properties="build.type=coldbox" />
+		<cfdistro target="server.etc.hosts" properties="build.type=fw1" />
 	</target>
 
 	<!-- these are just here for the Eclipse Ant UI ordering -->

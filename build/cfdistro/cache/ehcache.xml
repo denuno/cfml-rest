@@ -17,7 +17,7 @@
 			<required-resource
 			src="${ext.ehcache.zip.uri}"
 			dest="${ext.ehcache.zip}.gz"
-		/>
+			/>
 			<gunzip src="${ext.ehcache.zip}.gz" dest="${ext.ehcache.dir}">
 			</gunzip>
 			<untar src="${ext.ehcache.zip}"						
@@ -91,6 +91,17 @@ xsi:noNamespaceSchemaLocation="../../main/config/ehcache.xsd">
 ${ehcache.dir}/bin/startup.sh]]>
 		</echo>
 		<chmod file="${basedir}/../ehcache.sh" perm="ugo+rx"/>
+	</target>
+
+	<target name="ehcache.war.install">
+		<property name="ehcache.version" value="ehcache-server-1.0.0" />
+		<property name="ehcache.war" value="${server.deploy.dir}/ehcache.war" />
+		<antcontrib:runtarget target="ehcache.install" />
+		<mkdir dir="${ehcache.war}" />
+		<unzip src="../${ehcache.version}/${ehcache.version}.war" dest="${ehcache.war}"/>
+		<delete file="${ehcache.war}/WEB-INF/jetty-web.xml"/>
+		<requires-ext-file file="${ext.dir}/slf4j/slf4j-nop-1.5.8.jar"/>
+		<copy file="${ext.dir}/slf4j/slf4j-nop-1.5.8.jar" todir="${ehcache.war}/WEB-INF/lib"/> 
 	</target>
 
 </project>

@@ -1221,7 +1221,8 @@
 				</copy>
 			</then>
 		</antcontrib:if>
-		<copy todir="${dist.dir}/${distro.name}/" file="${basedir}/../${distro.name}.sh"/>
+		<copy todir="${dist.dir}/${distro.name}/" file="${basedir}/../${distro.name}"/>
+		<copy todir="${dist.dir}/${distro.name}/" file="${basedir}/../${distro.name}.bat"/>
 		<copy todir="${dist.dir}/${distro.name}/build" verbose="false">
 			<fileset dir="${basedir}/">
 				<exclude name="**/.git/**" />
@@ -1283,7 +1284,7 @@
 -->
 <fixcrlf srcdir="${dist.dir}" includes="**/*.bat" eol="crlf" />
 <fixcrlf srcdir="${dist.dir}/${distro.name}/build" includes="**/*.xml" eol="crlf" />
-<chmod file="${dist.dir}/${distro.name}/${distro.name}.sh" perm="ugo+rx" />
+<chmod file="${dist.dir}/${distro.name}/${distro.name}" perm="ugo+rx" />
 <chmod file="${dist.dir}/${distro.name}/build/cfdistro.sh" perm="ugo+rx" />
 <chmod file="${dist.dir}/${distro.name}/build/cfdistro/ant/bin/ant" perm="ugo+rx" />
 <!-- use our macrodef that uses OS zip executable so we retain file permissions -->

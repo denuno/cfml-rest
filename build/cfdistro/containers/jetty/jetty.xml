@@ -71,6 +71,10 @@
 				       dest="${jetty.dir}">
 					<regexpmapper from="jetty-distribution-${jetty.version.long}/(.*)$" to="\1"/>
 				</unzip>
+				<delete file="${jetty.dir}/webapps/test.war" />
+				<delete dir="${jetty.dir}/contexts/test.d" />
+				<delete file="${jetty.dir}/contexts/test.xml" />
+				<delete file="${jetty.dir}/contexts/javadoc.xml" />
 			</else>
 		</antcontrib:if>
 		<antcontrib:if>
@@ -87,7 +91,8 @@
 				<copy todir="${jetty.dir}/lib/ext" overwrite="true">
 					<fileset dir="${add.libs.dir}" />
 				</copy>
-				<!-- current railo ships incompatible logger -->
+				<!-- current railo ships incompatible logger 
+				-->
 				<delete file="${jetty.dir}/lib/ext/railo-sl4j.jar"/>
 			</then>
 		</antcontrib:if>
@@ -99,22 +104,22 @@
 		<chmod dir="${jetty.dir}/bin" perm="ugo+rx" 
 		       includes="**/*.sh"/>
 		<echo file="${jetty.dir}/contexts/${server.host}.xml"><![CDATA[<Configure class="org.eclipse.jetty.webapp.WebAppContext">
-			<Set name="war">${war.target.dir}</Set>
-			<Set name="contextPath">/</Set>
-			<Set name="virtualHosts">
-				<Array type="java.lang.String">
-					<Item>${server.host}</Item>
-				</Array>
-			</Set>
-			<Set name="welcomeFiles">
-			    <Array type="String">
-			      <Item>index.cfm</Item>
-			      <Item>index.cfml</Item>
-			      <Item>index.htm</Item>
-			      <Item>index.html</Item>
-			    </Array>
-			</Set>
-			</Configure>]]>
+<Set name="war">${war.target.dir}</Set>
+<Set name="contextPath">/</Set>
+<Set name="virtualHosts">
+	<Array type="java.lang.String">
+		<Item>${server.host}</Item>
+	</Array>
+</Set>
+<Set name="welcomeFiles">
+    <Array type="String">
+      <Item>index.cfm</Item>
+      <Item>index.cfml</Item>
+      <Item>index.htm</Item>
+      <Item>index.html</Item>
+    </Array>
+</Set>
+</Configure>]]>
 		</echo>
 		<!--
 		<xmltask source="${jetty.dir}/conf/server.xml" dest="${jetty.dir}/conf/server.xml">
