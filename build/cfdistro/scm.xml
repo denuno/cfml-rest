@@ -107,7 +107,7 @@
 						</then>
 						<else>
 							<echo message="Src dir : @{dest} ain't there, downloading" />
-							<scm-export dest="@{dest}" type="@{type}" uri="@{uri}" path="@{path}" tag="${tag}" />
+							<scm-export dest="@{dest}" type="@{type}" uri="@{uri}" path="@{path}" tag="@{tag}" />
 						</else>
 					</antcontrib:if>
 				</actions>

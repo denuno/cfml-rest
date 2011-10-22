@@ -38,7 +38,7 @@
  -->
 		<src dest="@src.dir@/org" type="git" 
 		uri="https://github.com/seancorfield/fw1.git"
-		path="/org" 
+		path="/org" tag="origin/develop"
 		user="" password="" />
 		
 <!--	FW/1  skeleton for use with the above

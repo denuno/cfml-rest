@@ -113,6 +113,13 @@
 					<arg value="@{dest}" />
 				</args>
 			</git>
+			<antcontrib:if>
+				<equals arg1="@{tag}" arg2="HEAD" />
+				<then/>
+				<else>
+					<git-checkout repository="@{dest}" branch="@{tag}"/>
+				</else>
+			</antcontrib:if>
 		</sequential>
 	</macrodef>
 
