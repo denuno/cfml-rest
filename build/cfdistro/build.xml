@@ -503,7 +503,7 @@
 		</exec>
 	</target>
 
-	<target name="src.to.mappings.xml" depends="exists.src.dir">
+	<target name="src.to.mappings.xml" depends="exists.src.xml">
 		<echo file="${mappings.file}" message="&lt;mappings&gt;&lt;/mappings&gt;" />
 		<antcontrib:for param="file">
 			<path>

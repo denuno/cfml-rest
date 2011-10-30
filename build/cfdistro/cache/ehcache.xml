@@ -100,6 +100,7 @@ ${ehcache.dir}/bin/startup.sh]]>
 		<mkdir dir="${ehcache.war}" />
 		<unzip src="../${ehcache.version}/${ehcache.version}.war" dest="${ehcache.war}"/>
 		<delete file="${ehcache.war}/WEB-INF/jetty-web.xml"/>
+		<mkdir dir="${ext.dir}/slf4j"/>
 		<requires-ext-file file="${ext.dir}/slf4j/slf4j-nop-1.5.8.jar"/>
 		<copy file="${ext.dir}/slf4j/slf4j-nop-1.5.8.jar" todir="${ehcache.war}/WEB-INF/lib"/> 
 	</target>

@@ -733,6 +733,55 @@
 		</sequential>
 	</macrodef>	
 
+	<macrodef name="railo-extension-install">
+		<attribute name="extension-zip" />
+		<attribute name="extension-tag" />
+		<attribute name="builtin" default="false" />
+		<sequential>
+			<property name="extension.temp.dir" value="${temp.dir}/extensions-tmp"/>
+			<mkdir dir="${extension.temp.dir}" />
+			<unzip src="@{extension-zip}" dest="${extension.temp.dir}" />
+			<antcontrib:if><available file="${extension.temp.dir}/libs.zip"/>
+			<then>
+				<unzip src="${extension.temp.dir}/libs.zip" dest="${war.target.dir}/WEB-INF/railo/lib/" />
+			</then>
+			</antcontrib:if>
+			<antcontrib:if><available file="${extension.temp.dir}/plugins.zip"/>
+			<then>
+				<unzip src="${extension.temp.dir}/plugins.zip" dest="${war.target.dir}/WEB-INF/railo/context/admin/plugin" />
+			</then>
+			</antcontrib:if>
+			<antcontrib:if><available file="${extension.temp.dir}/tag.zip"/>
+			<then>
+				<antcontrib:if>
+					<equals arg1="@{builtin}" arg2="true" />
+					<then>
+						<antcontrib:propertyregex override="yes" property="extension.tag.cfc.dir" input="@{extension-tag}" 
+							regexp="^cf(.*)" select="\1" />
+						<mkdir dir="${war.target.dir}/WEB-INF/railo/context/library/tag/" />
+						<echo file="${war.target.dir}/WEB-INF/railo/context/library/tag/${extension.tag.cfc.dir}.cfc"><![CDATA[<cfcomponent extends="@{extension-tag}/cfc/${extension.tag.cfc.dir}"></cfcomponent>]]></echo>
+						<unzip src="${extension.temp.dir}/tag.zip" dest="${war.target.dir}/WEB-INF/railo/context/library/tag/" />
+						<railo-customtag physical="${war.target.dir}/WEB-INF/railo/context/library/tag/@{extension-tag}" virtual="" />
+					</then>
+					<else>
+						<unzip src="${extension.temp.dir}/tag.zip" dest="${war.target.dir}/WEB-INF/railo/context/customtags/" />
+						<railo-customtag physical="${war.target.dir}/WEB-INF/railo/context/customtags/@{extension-tag}" virtual="" />
+					</else>
+				</antcontrib:if>
+			</then>
+			</antcontrib:if>
+			<antcontrib:if><available file="${extension.temp.dir}/plugins.zip"/>
+			<then>
+				<unzip src="${extension.temp.dir}/cdriver.zip" dest="${war.target.dir}/WEB-INF/railo/context/admin/cdriver/" />
+			</then>
+			</antcontrib:if>
+			<antcontrib:if><available file="${extension.temp.dir}/plugins.zip"/>
+			<then>
+				<unzip src="${extension.temp.dir}/function.zip" dest="${war.target.dir}/WEB-INF/railo/context/library/function" />
+			</then>
+			</antcontrib:if>
+		</sequential>
+	</macrodef>	
 	
 	<macrodef name="railo-mapping-remove">
 		<attribute name="virtual" />
